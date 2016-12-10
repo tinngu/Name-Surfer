@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <title>Name Surfer</title>
+</head>
+
+<body>
+<div class="container">
+  <div class="jumbotron">
+    <h1 align="center">Name Surfer</h1>
+    <p>This application neatly displays the popularity of the name entered in a curve chart. The time frame for the data is from the 1900s to 2000.</p>
+    <p>A rank popularity of 1 means that the name was the most popular name for that year, while a high rank number of 999 means that the name was not very popular. A rank of 0 means the name did not appear in the top 1000 for that year at all. A rank of 0 will not appear on the chart meaning, unpopular names will not show up.</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 col-lg-offset-3">
+<div class="input-group input-group-lg">
+  <input class="form-control" id="input" type="text" name="word" placeholder="Name">
+  <span class="input-group-btn">
+    <button class="btn btn-secondary" type="button">Search</button>
+  </span>
+</div>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  $(document).ready(() => {
+    // set a listener on the textbox
+    $('#input').on("change", (evt) => {
+      let text = $('#input').val().replace(/[^a-zA-Z0-9]/g, '');
+
+      // the {text: text} sends a parameter named text with the
+      // value of what was typed in the textbox
+      $.get("/NameSurfer", {name: text})
+          .done((data) => {
+            window.location.href = "NameSurf";
+            $('#input').val('');   // reset the textbox
+          })
+          .fail((xhr) => {
+            alert('No chart changes: The name was not popular enough to be found during the time :(');
+            $('#input').val('');   // reset the textbox
+            console.log(xhr);
+          });
+    });
+  });
+</script>
+
+<div align="center">
+<section>
+  <%= yield %>
+</section>
+</div>
+
+</body>
+</html>

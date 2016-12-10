@@ -1,0 +1,96 @@
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+
+      var yearTitle = ["Year"];
+      var name1900  = ["1900"];
+      var name1910  = ["1910"];
+      var name1920  = ["1920"];
+      var name1930  = ["1930"];
+      var name1940  = ["1940"];
+      var name1950  = ["1950"];
+      var name1960  = ["1960"];
+      var name1970  = ["1970"];
+      var name1980  = ["1980"];
+      var name1990  = ["1990"];
+      var name2000  = ["2000"];
+
+
+      var nameData = <%= settings.nameData %>
+
+      for (var data of nameData)
+      {
+        yearTitle.push(data[0]);
+        name1900.push(data[1]);
+        name1910.push(data[2]);
+        name1920.push(data[3]);
+        name1930.push(data[4]);
+        name1940.push(data[5]);
+        name1950.push(data[6]);
+        name1960.push(data[7]);
+        name1970.push(data[8]);
+        name1980.push(data[9]);
+        name1990.push(data[10]);
+        name2000.push(data[11]);
+      }
+
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        yearTitle,
+        name1900,
+        name1910,
+        name1920,
+        name1930,
+        name1940,
+        name1950,
+        name1960,
+        name1970,
+        name1980,
+        name1990,
+        name2000
+      ]);
+
+      var options = {
+        title: 'Name Surfer',
+        curveType: 'function',
+        legend: {position: 'bottom'},
+        vAxis: {
+          title: 'Popularity',
+          direction: -1, //Flips the y-axis for popularity ranking
+          viewWindow: {
+            min: 0,
+            max: 1150
+          },
+          ticks: [0, 200, 400,  600,  800, 1000]
+        },
+        hAxis: {
+          title: 'Year'
+          //Ticks not needed as they are already created in the beginning
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+      chart.draw(data, options);
+      dataExists = true;
+    }
+  </script>
+</head>
+<body>
+
+<div id="curve_chart" style="width: 900px; height: 500px"></div>
+
+<ul class="list-group">
+  <li class="list-group-item">0 = Not popular enough to be on the chart at all</li>
+  <li class="list-group-item">1 = Most popular for that particular year on the chart</li>
+  <li class="list-group-item">1000 = Least popular for that year, but still made it to top 1000</li>
+</ul>
+
+<!-- Allows the chart to be cleared and start a new-->
+<form action="/" method="GET">
+  <input type="submit" class="btn btn-info" value="Clear Chart">
+</form>
+</body>
